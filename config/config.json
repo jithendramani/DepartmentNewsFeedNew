@@ -17,11 +17,20 @@
           "manifest": "./src/webparts/departmentNewsInDetail/DepartmentNewsInDetailWebPart.manifest.json"
         }
       ]
+    },
+    "department-news-view-all-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/departmentNewsViewAll/DepartmentNewsViewAllWebPart.js",
+          "manifest": "./src/webparts/departmentNewsViewAll/DepartmentNewsViewAllWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "DepartmentNewsWebPartStrings": "lib/webparts/departmentNews/loc/{locale}.js",
-    "DepartmentNewsInDetailWebPartStrings": "lib/webparts/departmentNewsInDetail/loc/{locale}.js"
+    "DepartmentNewsInDetailWebPartStrings": "lib/webparts/departmentNewsInDetail/loc/{locale}.js",
+    "DepartmentNewsViewAllWebPartStrings": "lib/webparts/departmentNewsViewAll/loc/{locale}.js"
   }
 }

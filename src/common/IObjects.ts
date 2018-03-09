@@ -5,6 +5,12 @@ export interface IDepartmentNewsState {
     error: string;
   }
 
+  export interface IDepartmentNewsViewAllState {
+    newsItems: INews[];
+    loading: boolean;
+    error: string;
+  }
+
 export interface IDepartmentNewsInDetailState{  
   news:INews[];
   loading: boolean;

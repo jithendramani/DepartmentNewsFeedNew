@@ -1,9 +1,8 @@
 import IDataProvider from '../../../dataProviders/IDataProvider';
 
-export interface IDepartmentNewsProps {
+export interface IDepartmentNewsViewAllProps {
   listName: string;
   numberOfItems:number;
   detailedNewsPageUrl:string;
-  viewAllNewsPageUrl:string;
   dataProvider: IDataProvider;
 }

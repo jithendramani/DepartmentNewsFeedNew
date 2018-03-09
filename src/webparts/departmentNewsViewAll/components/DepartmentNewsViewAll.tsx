@@ -1,30 +1,20 @@
 import * as React from 'react';
-import styles from './DepartmentNews.module.scss';
-import { IDepartmentNewsProps } from './IDepartmentNewsProps';
+import styles from './DepartmentNewsViewAll.module.scss';
+import { IDepartmentNewsViewAllProps } from './IDepartmentNewsViewAllProps';
 import { escape } from '@microsoft/sp-lodash-subset';
-import { IWebPartContext } from '@microsoft/sp-webpart-base';
-import { SPHttpClient } from '@microsoft/sp-http';
-import { INews,IDepartmentNewsState } from "../../../common/IObjects";
+import { INews,IDepartmentNewsViewAllState } from "../../../common/IObjects";
 import {
   ActionButton,
   IButtonProps
 } from 'office-ui-fabric-react/lib/Button';
-import {
-  DocumentCard,
-  DocumentCardPreview,
-  DocumentCardTitle,
-  DocumentCardType,
-  DocumentCardActivity,
-  IDocumentCardPreviewProps
- } from 'office-ui-fabric-react/lib/DocumentCard';
 
- import {
+import {
   Spinner, DocumentCardLocation
 } from 'office-ui-fabric-react';
 
-export default class DepartmentNews extends React.Component<IDepartmentNewsProps, IDepartmentNewsState> {
+export default class DepartmentNewsViewAll extends React.Component<IDepartmentNewsViewAllProps, IDepartmentNewsViewAllState> {
 
-  constructor(props: IDepartmentNewsProps, state: IDepartmentNewsState) {
+  constructor(props: IDepartmentNewsViewAllProps, state: IDepartmentNewsViewAllState) {
     super(props);
     this.state = {
       newsItems: [] as INews[],
@@ -43,7 +33,7 @@ export default class DepartmentNews extends React.Component<IDepartmentNewsProps
     });
   }
 
-  public componentDidUpdate(prevProps: IDepartmentNewsProps, prevState: IDepartmentNewsState, prevContext: any): void {
+  public componentDidUpdate(prevProps: IDepartmentNewsViewAllProps, prevState: IDepartmentNewsViewAllState, prevContext: any): void {
     // this.props.dataProvider.loadNews(this.props.listName, this.props.numberOfItems).then((items:INews[])=>{
     //   this.setState({
     //     newsItems: items,
@@ -53,8 +43,8 @@ export default class DepartmentNews extends React.Component<IDepartmentNewsProps
     // });
   }
 
-  public goToViewAll(){
-    window.location.href = this.props.viewAllNewsPageUrl;
+  private loadMore(){
+    console.log('Load More...');
   }
 
   public render(): JSX.Element {
@@ -104,58 +94,13 @@ export default class DepartmentNews extends React.Component<IDepartmentNewsProps
         </div>
         <div className={styles.viewAllButtonContainer}>
         <ActionButton
-          data-automation-id='test' onClick={(ev)=> this.goToViewAll()}
+          data-automation-id='test' onClick={(ev)=> this.loadMore()}
           iconProps={ { iconName: 'Add' } }
         >
-          View All
+          Load More
         </ActionButton></div>
         <div style={{clear: 'both'}}/>
       </div>
     );
-  }
-
-  public render2(): JSX.Element {
-    const loading: JSX.Element = this.state.loading ? <div style={{margin: '0 auto'}}><Spinner label={'Loading...'} /></div> : <div/>;
-    const error: JSX.Element = this.state.error ? <div><strong>Error:</strong> {this.state.error}</div> : <div/>;
-    const documents: JSX.Element[] = this.state.newsItems.map((doc: INews, i: number) => {
-      const iconUrl: string = ``;
-      return (
-        <div style={{paddingBottom:5}}>
-        <DocumentCard  type={ DocumentCardType.compact } onClickHref={this.props.detailedNewsPageUrl+"?newsid="+doc.id+"&list="+this.props.listName} >
-          <DocumentCardPreview
-            previewImages={[
-              {
-                previewImageSrc: doc.pictureUrl, 
-                width: 155,
-              }
-            ]}
-            />
-             <div className='ms-DocumentCard-details'>
-           <DocumentCardTitle
-              title={doc.title} 
-              shouldTruncate={ true }
-            />
-            <div className='text_description' title={doc.description}></div>
-          <DocumentCardActivity
-            activity={doc.modifiedTime}
-            people={
-              [
-                { name: doc.editorName, profileImageSrc: doc.editorEmail }
-              ]
-            }
-            />
-            </div>
-        </DocumentCard>
-        </div>
-      );
-    });
-    return (
-      <div>
-        {loading}
-        {error}
-        {documents}
-        <div style={{clear: 'both'}}/>
-      </div>
-    ); 
   }
 }

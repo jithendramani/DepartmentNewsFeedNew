@@ -8,21 +8,19 @@ import {
   PropertyPaneSlider
 } from '@microsoft/sp-webpart-base';
 
-import * as strings from 'DepartmentNewsWebPartStrings';
-import DepartmentNews from './components/DepartmentNews';
+import * as strings from 'DepartmentNewsViewAllWebPartStrings';
+import DepartmentNewsViewAll from './components/DepartmentNewsViewAll';
+import { IDepartmentNewsViewAllProps } from './components/IDepartmentNewsViewAllProps';
 import SharePointDataProvider from '../../dataProviders/SharePointDataProvider';
 import IDataProvider from '../../dataProviders/IDataProvider';
-import { IDepartmentNewsProps } from './components/IDepartmentNewsProps';
 
-export interface IDepartmentNewsWebPartProps {
-  listName:string;
+export interface IDepartmentNewsViewAllWebPartProps {
+  listName: string;
   numberOfItems:number;
   detailedNewsPageUrl:string;
-  viewAllNewsPageUrl:string;
-  
 }
 
-export default class DepartmentNewsWebPart extends BaseClientSideWebPart<IDepartmentNewsWebPartProps> {
+export default class DepartmentNewsViewAllWebPart extends BaseClientSideWebPart<IDepartmentNewsViewAllWebPartProps> {
 
   private _dataProvider: IDataProvider;
 
@@ -31,16 +29,14 @@ export default class DepartmentNewsWebPart extends BaseClientSideWebPart<IDepart
      
     return super.onInit();
   }
-
   public render(): void {
-    const element: React.ReactElement<IDepartmentNewsProps > = React.createElement(
-      DepartmentNews,
+    const element: React.ReactElement<IDepartmentNewsViewAllProps > = React.createElement(
+      DepartmentNewsViewAll,
       {
-        listName: this.properties.listName,
-        numberOfItems:this.properties.numberOfItems,
-        dataProvider: this._dataProvider,
+        listName: this.properties.listName,        
         detailedNewsPageUrl:this.context.pageContext.web.absoluteUrl + this.properties.detailedNewsPageUrl,
-        viewAllNewsPageUrl: this.context.pageContext.web.absoluteUrl +this.properties.viewAllNewsPageUrl
+        numberOfItems:this.properties.numberOfItems,
+        dataProvider: this._dataProvider        
       }
     );
 
@@ -61,7 +57,10 @@ export default class DepartmentNewsWebPart extends BaseClientSideWebPart<IDepart
           groups: [
             {
               groupName: strings.BasicGroupName,
-              groupFields: [               
+              groupFields: [
+                PropertyPaneTextField('description', {
+                  label: strings.DescriptionFieldLabel
+                }),
                 PropertyPaneTextField('listName', {
                   label: strings.ListNameFieldLabel
                 }),
@@ -73,10 +72,8 @@ export default class DepartmentNewsWebPart extends BaseClientSideWebPart<IDepart
                 }),
                 PropertyPaneTextField('detailedNewsPageUrl', {
                   label: strings.DetailedNewsPageUrlFieldLabel
-                }),
-                PropertyPaneTextField('viewAllNewsPageUrl', {
-                  label: strings.ViewAllNewsPageUrlFieldLabel
-                }),
+                })
+
               ]
             }
           ]
