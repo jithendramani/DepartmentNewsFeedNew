@@ -9,6 +9,9 @@ export interface IDepartmentNewsState {
     newsItems: INews[];
     loading: boolean;
     error: string;
+    pageIndex:number;
+    skipId:number;
+    skipModified:string;
   }
 
 export interface IDepartmentNewsInDetailState{  
@@ -30,4 +33,5 @@ export interface IPictureViewState{
     editorName:string;
     editorEmail:string;
     modifiedTime:string;
+    modified:string;    
   }

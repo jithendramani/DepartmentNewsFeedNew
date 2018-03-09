@@ -19,16 +19,23 @@ export default class DepartmentNewsViewAll extends React.Component<IDepartmentNe
     this.state = {
       newsItems: [] as INews[],
       loading: true,
-      error: null
+      error: null,
+      pageIndex:0,
+      skipId:0,
+      skipModified:""
     };
   }
 
   public componentDidMount(): void {
-    this.props.dataProvider.loadNews(this.props.listName, this.props.numberOfItems).then((items:INews[])=>{
+    this.props.dataProvider.loadNewsViewAll(this.props.listName, this.props.numberOfItems,0,"",0).then((items:INews[])=>{
+      
       this.setState({
         newsItems: items,
         loading: false,
-        error: null
+        error: null,
+        pageIndex:0,
+        skipId:(items.length>0?items[items.length-1].id:0),
+        skipModified:(items.length>0?items[items.length-1].modified:"")
       });
     });
   }
@@ -44,7 +51,17 @@ export default class DepartmentNewsViewAll extends React.Component<IDepartmentNe
   }
 
   private loadMore(){
-    console.log('Load More...');
+    this.props.dataProvider.loadNewsViewAll(this.props.listName, this.props.numberOfItems,this.state.skipId,this.state.skipModified,this.state.pageIndex+1).then((items:INews[])=>{
+      console.log(items);
+      this.setState({
+        newsItems: this.state.newsItems.concat(items),
+        loading: false,
+        error: null,
+        pageIndex:(this.state.pageIndex + 1),
+        skipId:(items.length>0?items[items.length-1].id:0),
+        skipModified:(items.length>0?items[items.length-1].modified:"")
+      });
+    });
   }
 
   public render(): JSX.Element {
@@ -57,30 +74,11 @@ export default class DepartmentNewsViewAll extends React.Component<IDepartmentNe
 
       return (
         <div className={styles.newsBlock}>
-          {/* <div className={styles.newsImgBox} >          
-          <DocumentCardPreview
-            previewImages={[
-              {
-                previewImageSrc: doc.pictureUrl, 
-                width: 196,
-                height:112
-              }
-            ]}
-            /></div> */}
           <div className={styles.newsContentBox}>
             <div className={styles.newsTitle}><a className={styles.newsTitleLink} href={this.props.detailedNewsPageUrl+"?newsid="+doc.id+"&list="+this.props.listName}>{doc.title}</a></div>
             <div className={styles.newsDescription} dangerouslySetInnerHTML={{__html: doc.description}}></div>
             <div><span className={styles.authorStyle}>{doc.editorName}</span>&nbsp;<span className={styles.modifiedDateStyle}>{doc.modifiedTime}</span></div>
-            {/* <div>
-            <DocumentCardActivity
-            activity={doc.modifiedTime}
-            people={
-              [
-                { name: doc.editorName, profileImageSrc: doc.editorEmail }
-              ]
-            }
-            />
-            </div> */}
+           
             </div>
         </div>
       );
@@ -94,7 +92,7 @@ export default class DepartmentNewsViewAll extends React.Component<IDepartmentNe
         </div>
         <div className={styles.viewAllButtonContainer}>
         <ActionButton
-          data-automation-id='test' onClick={(ev)=> this.loadMore()}
+           onClick={(ev)=> this.loadMore()}
           iconProps={ { iconName: 'Add' } }
         >
           Load More
