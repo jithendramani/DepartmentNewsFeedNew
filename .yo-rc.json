@@ -1,0 +1,8 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "version": "1.4.1",
+    "libraryName": "department-news-feed",
+    "libraryId": "b62ff795-6403-4859-8c2d-aaaf37024d4e",
+    "environment": "spo"
+  }
+}

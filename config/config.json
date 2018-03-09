@@ -1,0 +1,27 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "department-news-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/departmentNews/DepartmentNewsWebPart.js",
+          "manifest": "./src/webparts/departmentNews/DepartmentNewsWebPart.manifest.json"
+        }
+      ]
+    },
+    "department-news-in-detail-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/departmentNewsInDetail/DepartmentNewsInDetailWebPart.js",
+          "manifest": "./src/webparts/departmentNewsInDetail/DepartmentNewsInDetailWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "DepartmentNewsWebPartStrings": "lib/webparts/departmentNews/loc/{locale}.js",
+    "DepartmentNewsInDetailWebPartStrings": "lib/webparts/departmentNewsInDetail/loc/{locale}.js"
+  }
+}

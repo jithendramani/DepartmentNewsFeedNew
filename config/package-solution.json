@@ -1,0 +1,12 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "department-news-feed-client-side-solution",
+    "id": "b62ff795-6403-4859-8c2d-aaaf37024d4e",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true
+  },
+  "paths": {
+    "zippedPackage": "solution/department-news-feed.sppkg"
+  }
+}
