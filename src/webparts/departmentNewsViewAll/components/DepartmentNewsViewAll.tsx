@@ -22,7 +22,8 @@ export default class DepartmentNewsViewAll extends React.Component<IDepartmentNe
       error: null,
       pageIndex:0,
       skipId:0,
-      skipModified:""
+      skipModified:"",
+      hasNextPage:false
     };
   }
 
@@ -36,6 +37,13 @@ export default class DepartmentNewsViewAll extends React.Component<IDepartmentNe
         pageIndex:0,
         skipId:(items.length>0?items[items.length-1].id:0),
         skipModified:(items.length>0?items[items.length-1].modified:"")
+      });
+    });
+
+    this.props.dataProvider.hasNextPage(this.props.listName, this.props.numberOfItems,0,"").then((isNext:boolean)=>{
+      console.log(isNext);
+      this.setState({
+        hasNextPage:isNext
       });
     });
   }
@@ -60,6 +68,13 @@ export default class DepartmentNewsViewAll extends React.Component<IDepartmentNe
         pageIndex:(this.state.pageIndex + 1),
         skipId:(items.length>0?items[items.length-1].id:0),
         skipModified:(items.length>0?items[items.length-1].modified:"")
+      });
+    });
+
+    this.props.dataProvider.hasNextPage(this.props.listName, this.props.numberOfItems,this.state.skipId,this.state.skipModified).then((isNext:boolean)=>{
+      console.log(isNext);
+      this.setState({
+        hasNextPage:isNext
       });
     });
   }
@@ -90,10 +105,10 @@ export default class DepartmentNewsViewAll extends React.Component<IDepartmentNe
         <div className={styles.newsContainer}>
         {documents}
         </div>
-        <div className={styles.viewAllButtonContainer}>
+        <div className={styles.viewAllButtonContainer} >
         <ActionButton
            onClick={(ev)=> this.loadMore()}
-          iconProps={ { iconName: 'Add' } }
+          iconProps={ { iconName: 'Add' } } disabled={!this.state.hasNextPage}
         >
           Load More
         </ActionButton></div>

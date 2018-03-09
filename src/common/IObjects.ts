@@ -12,6 +12,7 @@ export interface IDepartmentNewsState {
     pageIndex:number;
     skipId:number;
     skipModified:string;
+    hasNextPage:boolean;
   }
 
 export interface IDepartmentNewsInDetailState{  

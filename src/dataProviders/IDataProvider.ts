@@ -7,5 +7,7 @@ export default  interface IDataProvider {
     loadNewsDetail(listName:string, newsId:number):Promise<INews[]>;
 
     loadNewsViewAll(listName: string, numberOfItems: number, skipId:number,skipModified:string, pageIndex:number): Promise<INews[]>;
+    
+    hasNextPage(listName: string, numberOfItems: number, skipId:number,skipModified:string): Promise<boolean>;
 
 }

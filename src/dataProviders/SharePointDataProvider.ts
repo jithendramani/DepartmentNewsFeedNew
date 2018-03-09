@@ -80,7 +80,6 @@ export default class SharePointDataProvider implements IDataProvider {
 
         }
         
-        console.log(queryUrlGetAllItems);
         let utility = new Utils();
         return this._webPartContext.spHttpClient.get(
             queryUrlGetAllItems,
@@ -124,6 +123,50 @@ export default class SharePointDataProvider implements IDataProvider {
 
     
 }
+
+    public hasNextPage(listName: string, numberOfItems: number, skipId:number,skipModified:string): Promise<boolean> {
+        numberOfItems=numberOfItems+1;
+        var queryUrlGetAllItems: string =this._webAbsoluteUrl + `/_api/web/lists/GetByTitle('${listName}')/items?`+
+        `$select=*,Editor/Title,Editor/EMail,AttachmentFiles&$expand=Editor,Editor/Id,AttachmentFiles`+
+        `&$orderby=Modified desc&$top=`+numberOfItems;
+
+            if(skipId>0){
+
+                queryUrlGetAllItems = this._webAbsoluteUrl + `/_api/web/lists/GetByTitle('${listName}')/items?`+
+                `$select=*,Editor/Title,Editor/EMail,AttachmentFiles&$expand=Editor,Editor/Id,AttachmentFiles`+
+                `&$orderby=Modified desc&$skiptoken=`+encodeURIComponent('Paged=TRUE&p_Modified='+skipModified)+`&$top=`+numberOfItems;
+
+            }
+
+                console.log(queryUrlGetAllItems);
+        var hasNextPage =false;
+        
+        return this._webPartContext.spHttpClient.get(
+            queryUrlGetAllItems,
+                SPHttpClient.configurations.v1)
+                .then(
+                (response: any) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        return Promise.reject(new Error(JSON.stringify(response)));
+                    }
+                })
+                .then((data: any) => {
+                    let documents: INews[] = [];
+                    if (data) {
+                        hasNextPage=(data.value.length==numberOfItems);
+                        
+                    }
+                    return hasNextPage;
+
+                }).catch((ex) => {
+                    console.log("readDocumentsFromLibrary > spHttpClient.get()...catch:", ex);
+                    throw ex;
+                });
+
+
+    }
 
     public loadNewsDetail(listName:string, newsId:number):Promise<INews[]>{
         //const queryUrlGetAllItems: string =this._webAbsoluteUrl + `/_api/web/lists/GetByTitle('${listName}')/items(${newsId})`;
